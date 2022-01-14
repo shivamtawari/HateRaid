@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Prediction - HateRaid</title>
+    <meta name="description" content="Prototype for identifying hate content online">
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli">
+    <link rel="stylesheet" href="static/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="static/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="static/css/Multi-step-form.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/img/favicon/favicon.ico?" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/jpeg" sizes="180x180" href="static/img/favicon/favicon_180.jpg">
+    <link rel="icon" type="image/jpeg" sizes="16x16" href="static/img/favicon/favicon_16.jpg">
+    <link rel="icon" type="image/jpeg" sizes="32x32" href="static/img/favicon/favicon_32.jpg">
+    <link rel="icon" type="image/jpeg" sizes="180x180" href="static/img/favicon/favicon_180.jpg">
+    <link rel="icon" type="image/jpeg" sizes="192x192" href="static/img/favicon/favicon_192.jpg">
+    <link rel="icon" type="image/jpeg" sizes="512x512" href="static/img/favicon/favicon_512.jpg">
+</head>
+
+<body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="56">
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="{{ url_for('index') }}"><strong>HateRaid</strong></a><button class="navbar-toggler float-end" data-bs-toggle="collapse" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" data-bs-target="#navbarResponsive"><i class="fa fa-bars"></i></button></div>
+    </nav>
+    <header class="masthead" style="background: url('static/img/bg-pattern.png'), linear-gradient(to left, #7b4397, #dc2430);">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-7 my-auto" data-aos="fade-right" data-aos-duration="900" data-aos-once="true">
+                    <div class="mx-auto header-content">
+                        <h2 class="mb-5">The Prediction for given content is <br>
+                            <span style="color: var(--bs-body-color);font-size: 55px;font-weight: bold;font-family: Catamaran, sans-serif;">
+                                {% if pred==1 %}
+                                    Hateful
+                                {% else %}
+                                    Non-Hateful
+                                {% endif %}
+                            </span>
+                            <br><br>
+                            <a class="btn btn-outline-warning btn-xl" role="button" href="{{ url_for('index') }}" style="padding-top: 10px;padding-right: 45px;padding-bottom: 10px;padding-left: 45px;text-align: center;font-size: 16px;font-family: Catamaran, sans-serif;">Predict more &gt;<br></a>
+                            <br><br>
+                            <span style="font-size: 24px;font-family: Catamaran, sans-serif;color: var(--bs-body-bg);">Prediction seem off to you?<br>
+                                <a href="#feedback" style="color: var(--bs-body-bg);font-family: Catamaran, sans-serif;text-decoration:  underline;">Fill out a quick minute form to let us improve</a><br>
+                            </span>
+                            <i class="fa fa-angle-double-down"></i>
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-lg-5 my-auto" data-aos="fade-left" data-aos-duration="900" data-aos-once="true">
+                    <div class="device-container">
+                        <div class="device-mockup iphone6_plus portrait white">
+                            <div class="device" style="background-image:url('static/img/iphone_6_plus_white_port.png');">
+                                <div class="screen" style="display: flex; justify-content: center; align-items: center;">
+                                    {% if 'No'==img %}
+                                    <!-- icons used in the project -->
+                                    <svg style="display: none;" viewBox="0 0 100 100">
+                                        <!-- reply -->
+                                        <symbol id="reply">
+                                            <g transform="translate(5 5)" stroke-width="10" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round" fill="none">
+                                                <path d="M 90 75 v -5 a 40 40 0 0 0 -40 -40 h -50 l 25 -25 m -25 25 l 25 25" />
+                                            </g>
+                                        </symbol>
+                                        <!-- retweet -->
+                                        <symbol id="retweet">
+                                            <g transform="translate(5 5)" stroke-width="10" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round" fill="none">
+                                                <path id="retweet--line" d="M 12 15 h 56 a 10 10 0 0 1 10 10 v 30 l 12 -12 m -12 12 l -12 -12" />
+                                                <use href="#retweet--line" transform="translate(90 90) scale(-1 -1)" />
+                                            </g>
+                                        </symbol>
+                                        <!-- like -->
+                                        <symbol id="like">
+                                            <g transform="translate(5 5)" stroke-width="10" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round" fill="none">
+                                                <path d="M 45 33.75 a 22.5 22.5 0 0 1 45 0 q 0 25 -45 50 q -45 -25 -45 -50 a 22.5 22.5 0 0 1 45 0" />
+                                            </g>
+                                        </symbol>
+                                        <!-- options -->
+                                        <symbol id="options">
+                                            <g transform="translate(10 50)" fill="currentColor">
+                                                <circle id="options--circle" cx="0" cy="0" r="10" />
+                                                <use href="#options--circle" transform="translate(40 0)" />
+                                                <use href="#options--circle" transform="translate(80 0)" />
+                                            </g>
+                                        </symbol>
+                                    </svg>
+
+                                    <!-- tweet component -->
+                                    <main class="tweet" style="margin-left: -20%">
+                                        <!-- profile picture -->
+                                        <svg viewBox="0 0 100 100" width="50" height="50">
+                                            <img src="/static/img/osama.png" style="width:50px"></img>
+                                        </svg>
+                                        <!-- name -->
+                                        <h1>HateRaid</h1>
+                                        <!-- timestamp
+                                        use the time element to add a date
+                                        -->
+                                        <h3><time>
+                                            {% if pred==1 %}
+                                                Hate
+                                            {% else %}
+                                                Non Hate
+                                            {% endif %}
+                                        </time></h3>
+                                        <!-- message -->
+                                        <p>
+                                            {{ text }}
+                                        </p>
+                                        <!-- icons -->
+                                        <div class="icons">
+                                            <svg aria-hidden="true" viewBox="0 0 100 100" width="30" height="30">
+                                                <use href="#reply"></use>
+                                            </svg>
+                                            <svg aria-hidden="true" viewBox="0 0 100 100" width="30" height="30">
+                                                <use href="#retweet"></use>
+                                            </svg>
+                                            <svg aria-hidden="true" viewBox="0 0 100 100" width="30" height="30">
+                                                <use href="#like"></use>
+                                            </svg>
+                                            <svg aria-hidden="true" viewBox="0 0 100 100" width="30" height="30">
+                                                <use href="#options"></use>
+                                            </svg>
+                                        </div>
+                                    </main>
+                                    {% else %}
+                                        <img class="img-fluid" src="{{ img }}">
+                                    {% endif %}
+                                </div>
+                                <div class="button"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="iphone-mockup"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="feedback" class="bg-primary">
+        <div data-aos="zoom-in" data-aos-duration="900" data-aos-once="true">
+            <h1><strong>Feedback</strong> for Prediction</h1>
+            <div id="multple-step-form-n" class="container overflow-hidden" style="margin-top: 0px;margin-bottom: 10px;padding-bottom: 0px;padding-top: 5px;">
+                <div id="progress-bar-button" class="multisteps-form">
+                    <div class="d-xl-flex justify-content-xl-center row">
+                        <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+                            <div class="multisteps-form__progress">
+                                <a class="btn multisteps-form__progress-btn js-active noHover" role="button">About You</a>
+                                <a class="btn multisteps-form__progress-btn noHover" role="button">Feedback</a>
+                                <a class="btn multisteps-form__progress-btn noHover" role="button">Submit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="multistep-start-row" class="row">
+                    <div id="multistep-start-column" class="col-12 col-lg-8 m-auto">
+                        <form action="{{ url_for('feedback') }}" method="POST" id="main-form" class="multisteps-form__form">
+                            <div id="single-form-next" class="multisteps-form__panel shadow p-4 rounded bg-white js-active" data-animation="scaleIn">
+                                <h3 class="text-center multisteps-form__title">About You</h3>
+                                <div id="form-content" class="multisteps-form__content">
+                                    <div class="d-xl-flex justify-content-xl-center align-items-xl-center form-row mt-4" id="input-grp-double">
+                                        <div class="col-12 col-sm-6">
+                                            <input class="form-control multisteps-form__input" type="text" placeholder="First Name" name="fname" id="fname">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                            <input class="form-control multisteps-form__input" type="text" placeholder="Last Name" name="lname" id="lname">
+                                        </div>
+                                    </div>
+                                    <div id="input-grp-single" class="form-row mt-4">
+                                        <div class="col-12">
+                                            <input class="form-control multisteps-form__input" type="text" placeholder="Email" inputmode="email" name="email" id="email">
+                                        </div>
+                                    </div>
+                                    <div id="next-button" class="button-row d-flex mt-4">
+                                        <button class="btn btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="single-form-next-prev" class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                                <h3 class="text-center multisteps-form__title">Why do you think the prediction is wrong?</h3>
+                                <div id="form-content-1" class="multisteps-form__content">
+                                    <div id="input-grp-single-1" class="form-row mt-4">
+                                        <div class="col-12">
+                                            <input class="form-control multisteps-form__input" type="text" placeholder="Explain Here" name="reason" id="reason">
+                                        </div>
+                                    </div>
+                                    <div id="next-prev-buttons" class="button-row d-flex mt-4">
+                                        <button class="btn btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
+                                        <button class="btn btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="single-form-next-prev-1" class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                                <h3 class="text-center multisteps-form__title">Thank you!</h3>
+                                <h4 class="text-center multisteps-form__title">Click on submit to send response</h4>
+                                <div id="form-content-2" class="multisteps-form__content">
+                                    <div id="next-prev-buttons-1" class="button-row mt-4" style="text-align:center;width: 300px;margin: 0 auto;">
+                                        <button class="btn btn btn-primary js-btn-prev" type="button" title="Prev">Go back</button>
+                                        <button class="btn btn btn-primary ml-auto js-btn-next" type="submit" title="Submit">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>© HateRaid 2021. All Rights Reserved.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Privacy</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+    </footer>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="static/js/Multi-step-form.js"></script>
+    <script src="static/js/new-age.js"></script>
+</body>
+
+</html>

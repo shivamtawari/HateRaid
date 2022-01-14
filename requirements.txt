@@ -1,0 +1,17 @@
+easyocr==1.4.1
+Flask==2.0.1
+gunicorn==20.1.0
+git+https://github.com/openai/CLIP.git
+itsdangerous==2.0.1
+Jinja2==3.0.1
+madgrad==1.1
+numpy==1.19.5
+pandas==1.2.2
+Pillow==7.1.2
+requests==2.25.1
+scikit-learn==0.24.1
+six==1.15.0
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==1.9.0+cpu
+transformers==4.11.3
+Werkzeug==2.0.1
